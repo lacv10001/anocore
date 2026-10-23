@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnoCore · WoW Forever</title>
+  <meta name="description" content="Reino privado AnoCore de WoW Forever: estado del servidor, crear cuenta y descargar el lanzador.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg: #070a12; --panel: rgba(16, 23, 38, .9); --line: rgba(146, 170, 214, .16); --text: #e9e4d6; --muted: #9aa5ba;
+      --gold: #e8b75a; --gold-hi: #ffd98a; --frost: #74d4ff; --ok: #57e0a0; --bad: #ff7a7a; --warn: #f5c451; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; color: var(--text); background: var(--bg); font: 15px/1.6 'Inter', system-ui, sans-serif;
+      background-image: radial-gradient(1000px 520px at 85% -10%, rgba(116, 212, 255, .12), transparent 60%),
+                        radial-gradient(800px 480px at -10% 30%, rgba(232, 183, 90, .10), transparent 60%);
+      display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+    main { width: min(640px, 100%); }
+    .brand { display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 22px; }
+    .sigil { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; color: #0a0e17;
+      background: conic-gradient(from 200deg, var(--gold), var(--gold-hi), var(--frost), var(--gold)); box-shadow: 0 0 26px rgba(232, 183, 90, .45); }
+    h1 { font-family: 'Cinzel', Georgia, serif; font-size: clamp(30px, 6vw, 44px); margin: 0; line-height: 1.05; }
+    h1 small { display: block; font: 700 11px 'Inter', sans-serif; letter-spacing: .32em; color: var(--frost); text-transform: uppercase; margin-top: 6px; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 26px; box-shadow: 0 18px 50px rgba(0, 0, 0, .45); }
+    .status { display: flex; align-items: center; justify-content: center; gap: 12px; font: 700 18px 'Cinzel', serif; letter-spacing: .04em; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--muted); }
+    .dot.online { background: var(--ok); box-shadow: 0 0 14px var(--ok); }
+    .dot.offline { background: var(--bad); box-shadow: 0 0 14px var(--bad); }
+    .dot.loading { background: var(--warn); animation: pulse 1s infinite alternate; }
+    @keyframes pulse { to { opacity: .35; } }
+    .meta { text-align: center; color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+    .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+    @media (max-width: 520px) { .buttons { grid-template-columns: 1fr; } }
+    .btn { display: none; text-align: center; padding: 12px 16px; border-radius: 11px; font-weight: 600; text-decoration: none;
+      border: 1px solid rgba(232, 183, 90, .38); color: var(--gold-hi); background: rgba(232, 183, 90, .08); transition: .15s; }
+    .btn:hover { background: rgba(232, 183, 90, .18); color: #fff; }
+    .btn.primary { grid-column: 1 / -1; border: 0; color: #1a1206; background: linear-gradient(180deg, var(--gold-hi), var(--gold)); font-size: 16px; }
+    .btn.primary:hover { color: #1a1206; filter: brightness(1.08); }
+    .steps { margin: 22px 0 0; padding-left: 20px; color: var(--muted); }
+    .steps b { color: var(--text); }
+    .error { display: none; margin-top: 14px; color: #ffd0d0; text-align: center; font-size: 14px; }
+    footer { text-align: center; color: #6c778c; font-size: 12px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+<main>
+  <div class="brand"><div class="sigil">❄</div><h1>AnoCore<small>WoW Forever · 1.60.1</small></h1></div>
+  <div class="card">
+    <div class="status"><span class="dot loading" id="statusDot"></span><span id="statusText">COMPROBANDO…</span></div>
+    <p class="meta" id="meta">Buscando el servidor…</p>
+    <div class="buttons">
+      <a class="btn primary" id="btnWeb" target="_blank" rel="noopener">Entrar a la web del reino</a>
+      <a class="btn" id="btnRegister" target="_blank" rel="noopener">Crear cuenta</a>
+      <a class="btn" id="btnDownload">Descargar lanzador</a>
+      <a class="btn" id="btnHowTo" target="_blank" rel="noopener">Cómo jugar</a>
+      <a class="btn" id="btnShop" target="_blank" rel="noopener">Tienda</a>
+    </div>
+    <ol class="steps">
+      <li>Instala <b>WoW Forever</b> (o WoW Forever Beta) con Battle.net, versión <b>1.60.1.70532</b>.</li>
+      <li><b>Crea tu cuenta</b> en la web del reino.</li>
+      <li>Descarga el <b>lanzador</b>, descomprímelo y abre <b>Jugar AnoCore Forever.bat</b>.</li>
+      <li>En el juego entra con tu <b>correo y contraseña</b> de AnoCore.</li>
+    </ol>
+    <div class="error" id="errorMsg"></div>
+  </div>
+  <footer>Guarda esta página: su dirección no cambia aunque cambie la del servidor.</footer>
+</main>
+<script>
+  const GIST_ID = 'acf386373bccfde2b275ead4ee6e71a4';
+  const GIST_FILE = 'forever_info.json';
+  const $ = (id) => document.getElementById(id);
+  const show = (id, href, newTab) => { const b = $(id); b.href = href; b.style.display = 'block'; if (!newTab) b.removeAttribute('target'); };
+
+  async function readInfo() {
+    // API de GitHub (siempre al día); si falla (límite de peticiones), el enlace raw sin caché
+    try {
+      const g = await (await fetch('https://api.github.com/gists/' + GIST_ID, { cache: 'no-store' })).json();
+      return JSON.parse(g.files[GIST_FILE].content);
+    } catch (e) {
+      const r = await fetch('https://gist.githubusercontent.com/lacv10001/' + GIST_ID + '/raw/' + GIST_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+      return r.json();
+    }
+  }
+
+  async function checkServer() {
+    try {
+      const d = await readInfo();
+      $('errorMsg').style.display = 'none';
+      if (d.web) {
+        show('btnWeb', d.web, true);
+        show('btnRegister', d.register || d.web + '/registro', true);
+        show('btnDownload', d.web + '/descargas/AnoCore-Forever-Lanzador.zip', false);
+        show('btnHowTo', d.web + '/como-jugar', true);
+        show('btnShop', d.web + '/tienda', true);
+      }
+      if (d.status === 'online') {
+        $('statusDot').className = 'dot online';
+        $('statusText').textContent = 'REINO EN LÍNEA';
+        $('meta').textContent = 'Conexión: ' + (d.mode === 'cloudflare' ? 'rápida (Cloudflare)' : 'respaldo') + ' · actualizado ' + (d.updated_at || '—');
+      } else if (d.status === 'reconnecting') {
+        $('statusDot').className = 'dot loading';
+        $('statusText').textContent = 'RECONECTANDO…';
+        $('meta').textContent = 'El servidor está renovando su conexión. Esta página se actualiza sola.';
+        setTimeout(checkServer, 10000);
+      } else {
+        $('statusDot').className = 'dot offline';
+        $('statusText').textContent = 'REINO APAGADO';
+        $('meta').textContent = 'Vuelve más tarde. ' + (d.updated_at ? 'Última vez: ' + d.updated_at : '');
+      }
+    } catch (e) {
+      $('statusDot').className = 'dot offline';
+      $('statusText').textContent = 'SIN DATOS';
+      $('meta').textContent = '';
+      $('errorMsg').textContent = 'No se pudo consultar el estado del servidor. Revisa tu conexión e inténtalo de nuevo.';
+      $('errorMsg').style.display = 'block';
+    }
+  }
+  checkServer();
+  setInterval(checkServer, 120000);
+</script>
+</body>
+</html>
